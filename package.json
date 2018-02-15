@@ -1,0 +1,14 @@
+{
+  "name": "odd-grotto",
+  "version": "0.0.0",
+  "scripts": {
+    "build-dev": "FUSEBOX_ENV=dev node fuse.js",
+    "build": "node fuse.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "fuse-box": "^3.1.3",
+    "typescript": "^2.7.1"
+  }
+}
