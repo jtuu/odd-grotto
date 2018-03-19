@@ -1,14 +1,41 @@
 {
   "name": "odd-grotto",
   "version": "0.0.0",
+  "main": "src/main.ts",
   "scripts": {
     "build-dev": "FUSEBOX_ENV=dev node fuse.js",
+    "build-lib": "node_modules/typescript/bin/tsc -p lib",
     "build": "node fuse.js"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@types/history": "^4.6.2",
+    "@types/node": "^9.4.7",
+    "@types/pako": "^1.0.0",
+    "@types/react": "^16.0.40",
+    "@types/react-dom": "^16.0.4",
+    "@types/react-router": "^4.0.22",
+    "@types/react-router-dom": "^4.2.4",
+    "@types/reactstrap": "^5.0.20",
+    "@types/webrtc": "0.0.23",
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "bootstrap": "^4.0.0",
+    "firebase": "^4.11.0",
     "fuse-box": "^3.1.3",
-    "typescript": "^2.7.1"
+    "mobx": "^3.6.1",
+    "mobx-state-tree": "^1.3.1",
+    "pako": "^1.0.6",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
+    "reactstrap": "^5.0.0-beta.2",
+    "tslib": "^1.9.0",
+    "typescript": "^2.7.2",
+    "uglify-es": "^3.3.9"
   }
 }

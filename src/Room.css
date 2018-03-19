@@ -1,0 +1,10 @@
+.room{
+    height: 100%;
+    position: relative;
+}
+
+.chat{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}

@@ -1,14 +1,17 @@
 {
   "compilerOptions": {
+    "moduleResolution": "node",
     "module": "commonjs",
     "target": "ESNext",
+    "jsx": "react",
     "importHelpers": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "lib": [
-      "es7",
-      "dom"
-    ]
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmitOnError": true,
+    "noErrorTruncation": true
   }
 }

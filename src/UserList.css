@@ -1,0 +1,35 @@
+.status-indicator{
+	position: relative;
+}
+
+.status-indicator:before{
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: -0.75rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+	background-color: #afafaf;
+}
+
+.status-indicator.disconnected:before{
+	background-color: #afafaf;
+}
+
+.status-indicator.connecting:before{
+	background-color: #ffaa00;
+}
+
+.status-indicator.connected:before{
+	background-color: #00ff00;
+}
+
+.status-indicator.failed:before{
+	background-color: #ff0000;
+}
+
+.status-indicator.you:before{
+	background-color: transparent;
+}
