@@ -12,13 +12,13 @@ export function imageLoaded(img: HTMLImageElement): boolean {
   return img.complete && img.naturalWidth > 0;
 }
 
-export class TimeoutError extends Error{
+export class TimeoutError extends Error {
   constructor(msg: string) {
     super(`Operation timed out: ${msg}`);
   }
 }
 
-export interface SignedData<T extends ArrayLike<number>>{
+export interface SignedData<T extends ArrayLike<number>> {
   byteSignature: T;
 }
 

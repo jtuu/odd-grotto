@@ -1,4 +1,4 @@
-export class StrictMap<K, V> extends Map<K, V>{
+export class StrictMap<K, V> extends Map<K, V> {
   constructor(entries?: ReadonlyArray<[K, V]>) {
     super(entries);
   }

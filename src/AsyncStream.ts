@@ -5,7 +5,7 @@ import { StrictMap } from "./StrictMap";
 // infinite for-await-of loops.
 // One stream can be used by multiple loops and every loop will
 // receive every item.
-export class AsyncStream<T>{
+export class AsyncStream<T> {
   // the underlying main data store of this class
   private items: T[] = [];
   // tracks how many times each item has been consumed
@@ -38,7 +38,7 @@ export class AsyncStream<T>{
         if (this.items.length === 0 || this.consumerIndices.get(id) >= this.items.length) {
           try {
             await this.itemAdded();
-          }catch (err) {
+          } catch (err) {
             break;
           }
         }

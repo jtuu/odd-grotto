@@ -2,23 +2,23 @@ import * as React from "react";
 import { Bind } from "./Decorators";
 import { Input, ListGroup, ListGroupItem } from "reactstrap";
 
-export interface ChatMessage{
+export interface ChatMessage {
   id: string;
   date: Date;
   sender: string;
   text: string;
 }
 
-interface ChatBoxProps{
+interface ChatBoxProps {
   messages: ChatMessage[];
   onMessageSend(msg: string): void;
 }
 
-interface ChatBoxState{
+interface ChatBoxState {
   inputValue: string;
 }
 
-export class ChatBox extends React.Component<ChatBoxProps, ChatBoxState>{
+export class ChatBox extends React.Component<ChatBoxProps, ChatBoxState> {
   private scrollDummyElement: HTMLDivElement | undefined;
 
   public state = {

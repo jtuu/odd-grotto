@@ -5,7 +5,7 @@ import { clamp, TimeoutError } from "./Utils";
 
 export type RTCDataChannelData = string | Blob | ArrayBuffer | ArrayBufferView;
 
-export enum ConnectionStatus{
+export enum ConnectionStatus {
   Failed,
   Unknown,
   Disconnected,
@@ -17,7 +17,7 @@ export enum ConnectionStatus{
 
 const connectionConfig: RTCPeerConnectionConfig = {iceServers};
 
-interface ConnectionEventHandlerStore{
+interface ConnectionEventHandlerStore {
   connection: Set<(id: string) => void>;
   statusChange: Set<(id: string, status: ConnectionStatus) => void>;
   message: Set<(msg: RTCDataChannelData) => void>;
@@ -25,7 +25,7 @@ interface ConnectionEventHandlerStore{
 
 export const lowestCommonMessageByteLimit = 16384;
 
-class WebRTCConnection{
+class WebRTCConnection {
   private _status: ConnectionStatus = ConnectionStatus.Disconnected;
 
   constructor(
@@ -50,7 +50,7 @@ class WebRTCConnection{
   }
 
   private dataChannelReadyStateToConnectionStatus(): ConnectionStatus {
-    switch (this.channel.readyState){
+    switch (this.channel.readyState) {
       case "connecting":
         return ConnectionStatus.Connecting;
       case "open":
@@ -64,7 +64,7 @@ class WebRTCConnection{
   }
 
   private peerConnectionSignalingStateToConnectionStatus(): ConnectionStatus {
-    switch (this.connection.signalingState){
+    switch (this.connection.signalingState) {
       case "have-local-offer":
       case "have-remote-offer":
       case "have-local-pranswer":
@@ -80,7 +80,7 @@ class WebRTCConnection{
   }
 
   private iceConnectionStateToConnectionStatus(): ConnectionStatus {
-    switch (this.connection.iceConnectionState){
+    switch (this.connection.iceConnectionState) {
       case "new":
       case "checking":
       case "disconnected":
@@ -97,7 +97,7 @@ class WebRTCConnection{
   }
 
   private iceGatheringStateToConnectionStatus(): ConnectionStatus {
-    switch (this.connection.iceGatheringState){
+    switch (this.connection.iceGatheringState) {
       case "new":
       case "gathering":
         return ConnectionStatus.Connecting;
@@ -112,7 +112,7 @@ class WebRTCConnection{
   // because of bad browser support (march 2018)
   // @ts-ignore
   private peerConnectionStateToConnectionStatus(): ConnectionStatus {
-    switch (this.connection.connectionState){
+    switch (this.connection.connectionState) {
       case "new":
       case "connecting":
         return ConnectionStatus.Connecting;
@@ -138,7 +138,7 @@ class WebRTCConnection{
     let sum = 0;
     let i = 0;
     for (const status of this.statuses()) {
-      switch (status){
+      switch (status) {
         case ConnectionStatus.Failed:
           return ConnectionStatus.Failed;
         case ConnectionStatus.Connecting:
@@ -183,7 +183,7 @@ class WebRTCConnection{
     return new Promise(resolve => {
       if (this.channel.readyState === "open") {
         resolve();
-      }else {
+      } else {
         const onOpen = () => {
           this.channel.removeEventListener("open", onOpen);
           resolve();
@@ -218,7 +218,7 @@ class WebRTCConnection{
   }
 }
 
-export class WebRTCMultiConnector{
+export class WebRTCMultiConnector {
   private connectionStore: Map<string, WebRTCConnection> = new Map();
   private handlerStore: ConnectionEventHandlerStore = {
     connection: new Set(),
@@ -317,7 +317,7 @@ export class WebRTCMultiConnector{
     const conn = this.connectionStore.get(target);
     if (conn) {
       conn.send(data);
-    }else {
+    } else {
       console.warn(`Attempted to send data to unknown target "${target}"`);
     }
   }

@@ -6,15 +6,15 @@ import * as firebase from "firebase";
 import { Redirect } from "react-router-dom";
 import { Button } from "reactstrap";
 
-interface LobbyProps{
+interface LobbyProps {
   username: string;
 }
 
-interface LobbyState{
+interface LobbyState {
   navigatingToNewRoom: boolean;
 }
 
-export class Lobby extends React.Component<LobbyProps, LobbyState>{
+export class Lobby extends React.Component<LobbyProps, LobbyState> {
   private newRoomRef!: firebase.database.Reference;
   private newRoomName: string | undefined;
   public state = {
@@ -46,7 +46,7 @@ export class Lobby extends React.Component<LobbyProps, LobbyState>{
             push={true}
           />
         );
-      }else {
+      } else {
         console.error("Navigating to new room failed");
       }
     }

@@ -1,13 +1,13 @@
 import { Action, ActionType, getEnergyCost, MoveAction } from "./Action";
 import { IEntity } from "./Entity";
 
-export enum ControllerType{
+export enum ControllerType {
   Keyboard,
   AI,
   Network
 }
 
-export abstract class Controller{
+export abstract class Controller {
   constructor(protected entity: IEntity) {}
 
   protected doMoveAction(action: MoveAction): boolean {
@@ -29,7 +29,7 @@ export abstract class Controller{
   }
 
   protected doAction(action: Action<any>): boolean {
-    switch (action.type){
+    switch (action.type) {
       case ActionType.Move:
         return this.doMoveAction(action) || this.doAttackAction(action);
     }

@@ -3,17 +3,17 @@ import { database } from "firebase";
 import { Bind } from "./Decorators";
 import { TimeoutError } from "./Utils";
 
-interface NegotiationMessageSnapshot extends database.DataSnapshot{
+interface NegotiationMessageSnapshot extends database.DataSnapshot {
   val(): NegotiationMessage;
 }
 
-interface NegotiationMessageReference extends database.Reference{
+interface NegotiationMessageReference extends database.Reference {
   set(value: NegotiationMessage, onComplete?: (e: Error) => any): Promise<void>;
 }
 
 type NegotiationMessageHandler = [string | null, string | null, SignalCallback];
 
-export class FirebaseWebRTCSignaler extends WebRTCSignaler{
+export class FirebaseWebRTCSignaler extends WebRTCSignaler {
   private signalingRef: database.Reference;
   private initialMessagesReceived = false;
   private timeout = 20 * 1000;
@@ -38,7 +38,7 @@ export class FirebaseWebRTCSignaler extends WebRTCSignaler{
     if (!this.initialMessagesReceived || !snap) { return; }
 
     const msg = snap.val();
-    switch (msg.type){
+    switch (msg.type) {
       case NegotiationMessageType.Offer:
       case NegotiationMessageType.Answer:
       case NegotiationMessageType.IceCandidate:

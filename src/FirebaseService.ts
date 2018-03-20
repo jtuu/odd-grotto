@@ -1,12 +1,12 @@
 import * as firebase from "firebase";
 import * as firebaseConfig from "./firebase-config.json";
 
-interface FirebaseConfig{
+interface FirebaseConfig {
   apiKey: string;
   databaseURL: string;
 }
 
-class FirebaseService{
+class FirebaseService {
   public readonly database: firebase.database.Database;
 
   constructor(config: FirebaseConfig) {

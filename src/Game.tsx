@@ -41,24 +41,24 @@ const GameStore = types
   }));
 
 type IGameType = typeof GameStore.Type;
-interface IGame extends IGameType{}
+interface IGame extends IGameType {}
 
 type IGameSnapshotType = typeof GameStore.SnapshotType;
-interface IGameSnapshot extends IGameSnapshotType{}
+interface IGameSnapshot extends IGameSnapshotType {}
 
-export interface GameState{
+export interface GameState {
   rng: RngState;
   game: IGameSnapshot;
 }
 
-interface GameProps{
+interface GameProps {
   username: string;
   peers: PeerAPI;
   mode: RoomMode;
   autoStart: boolean;
 }
 
-export class Game extends React.PureComponent<GameProps>{
+export class Game extends React.PureComponent<GameProps> {
   private static readonly storeDefaults: IGameSnapshot = {
     grid: {
       width: 100,
@@ -177,11 +177,11 @@ export class Game extends React.PureComponent<GameProps>{
       Game.localizeState(state, this.props.mode === "play");
       this.rng.setState(state.rng);
       this.initStore(state.game);
-    }else {
+    } else {
       this.initStore();
     }
 
-    switch (this.props.mode){
+    switch (this.props.mode) {
       case "play":
         this.play();
         break;
@@ -211,7 +211,7 @@ export class Game extends React.PureComponent<GameProps>{
 
   @Bind
   public createController(type: ControllerType, entity: any): Controller {
-    switch (type){
+    switch (type) {
       case ControllerType.Keyboard:
         return new KeyboardController(entity, this.keyboard, this.peers);
       case ControllerType.AI:
@@ -254,7 +254,7 @@ export class Game extends React.PureComponent<GameProps>{
   private drawGrid() {
     if (this.cachedGrid) {
       this.ctx.drawImage(this.cachedGrid, 0, 0);
-    }else {
+    } else {
       const gridW = this.store.grid.width * tilePxSize + 1;
       const gridH = this.store.grid.height * tilePxSize + 1;
       drawAsImage(gridW, gridH, this.forceDrawGrid).then(img => {

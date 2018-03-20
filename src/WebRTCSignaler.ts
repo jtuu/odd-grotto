@@ -1,12 +1,12 @@
 type PeerIdentifier = string;
 
-export enum NegotiationMessageType{
+export enum NegotiationMessageType {
   Offer,
   Answer,
   IceCandidate
 }
 
-export interface NegotiationMessage{
+export interface NegotiationMessage {
   type: NegotiationMessageType;
   sender: string;
   target: string;
@@ -15,7 +15,7 @@ export interface NegotiationMessage{
 
 export type SignalCallback = (msg: NegotiationMessage) => void;
 
-export abstract class WebRTCSignaler{
+export abstract class WebRTCSignaler {
   public abstract sendOffer(localId: PeerIdentifier, remoteId: PeerIdentifier, description: RTCSessionDescription | null): Promise<RTCSessionDescription>;
   public abstract sendAnswer(localId: PeerIdentifier, remoteId: PeerIdentifier, description: RTCSessionDescription): void;
   public abstract sendIceCandidate(localId: PeerIdentifier, remoteId: PeerIdentifier, candidate: RTCIceCandidate): void;

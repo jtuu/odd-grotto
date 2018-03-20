@@ -1,7 +1,7 @@
 import { Bind } from "./Decorators";
 import { AsyncStream } from "./AsyncStream";
 
-export class Keyboard{
+export class Keyboard {
   public readonly keyPresses: AsyncStream<KeyboardEvent> = new AsyncStream(false);
 
   constructor(private source: DOMEventTarget = window) {

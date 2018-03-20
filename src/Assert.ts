@@ -1,4 +1,4 @@
-class AssertError extends Error{
+class AssertError extends Error {
   constructor(msg: string) {
     super(msg);
   }

@@ -103,4 +103,4 @@ export const Entity = types
   });
 
 type IEntityType = typeof Entity.Type;
-export interface IEntity extends IEntityType{}
+export interface IEntity extends IEntityType {}

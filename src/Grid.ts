@@ -35,4 +35,4 @@ export const Grid = types
   }));
 
 type IGridType = typeof Grid.Type;
-export interface IGrid extends IGridType{}
+export interface IGrid extends IGridType {}

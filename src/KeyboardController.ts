@@ -4,7 +4,7 @@ import { Keyboard } from "./Keyboard";
 import { IEntity } from "./Entity";
 import { PeerAPI } from "./PeerAPI";
 
-export class KeyboardController extends Controller{
+export class KeyboardController extends Controller {
   private static readonly controls: Map<string, Action<any>> = new Map([
     ["7", moveAction(directions.NW)],
     ["8", moveAction(directions.N)],

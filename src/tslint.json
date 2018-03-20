@@ -39,6 +39,7 @@
         "unified-signatures": true,
         "quotemark": [true, "double", "jsx-double", "avoid-template", "avoid-escape"],
         "prefer-function-over-method": true,
-        "prefer-method-signature": true
+        "prefer-method-signature": true,
+        "one-line": [true, "check-whitespace"]
     }
 }

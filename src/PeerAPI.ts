@@ -6,7 +6,7 @@ import { Action } from "./Action";
 import { SignedData, isSignedData } from "./Utils";
 import { IEntity } from "./Entity";
 
-export enum PeerAPITopic{
+export enum PeerAPITopic {
   Ping = "Ping",
   Pong = "Pong",
   ChatMessage = "ChatMessage",
@@ -15,21 +15,21 @@ export enum PeerAPITopic{
   JoinGame = "JoinGame"
 }
 
-interface PingPongPayload{
+interface PingPongPayload {
   id: number;
 }
 
-interface ActionPayload{
+interface ActionPayload {
   entityId: number;
   time: number;
   action: Action<any>;
 }
 
-interface GameStatePart{
+interface GameStatePart {
   part: OddGrottoData;
 }
 
-interface PayloadMap{
+interface PayloadMap {
   [PeerAPITopic.Ping]: PingPongPayload;
   [PeerAPITopic.Pong]: PingPongPayload;
   [PeerAPITopic.ChatMessage]: ChatMessage;
@@ -40,7 +40,7 @@ interface PayloadMap{
 
 type PayloadMapKeys = keyof PayloadMap;
 
-export interface PeerAPIMessage<T extends PayloadMapKeys>{
+export interface PeerAPIMessage<T extends PayloadMapKeys> {
   topic: T;
   payload: PayloadMap[T];
 }
@@ -51,7 +51,7 @@ const oddGrottoSignature = new Uint8Array([202, 174, 31, 109]);
 type OddGrottoData = Uint8Array & SignedData<[202, 174, 31, 109]>;
 
 export const oddGrottoDataKindIndex = oddGrottoSignature.length;
-export enum OddGrottoDataKind{
+export enum OddGrottoDataKind {
   GameStatePart,
   GameStatePartEnd
 }
@@ -107,10 +107,10 @@ export class PeerAPI {
       }
 
       throw new Error(`Malformed JSON message: "${msg}"`);
-    }else if (msg instanceof ArrayBuffer) {
+    } else if (msg instanceof ArrayBuffer) {
       const view = new Uint8Array(msg);
       if (PeerAPI.isOddGrottoData(view)) {
-        switch (view[oddGrottoDataKindIndex]){
+        switch (view[oddGrottoDataKindIndex]) {
           case OddGrottoDataKind.GameStatePart:
           case OddGrottoDataKind.GameStatePartEnd:
             return PeerAPI.createMessage(PeerAPITopic.GameStatePart, {part: view});
@@ -128,7 +128,7 @@ export class PeerAPI {
     let msg: PeerAPIMessage<any>;
     try {
       msg = PeerAPI.parseMessage(_msg);
-    }catch (err) {
+    } catch (err) {
       console.error(`Failed to parse PeerAPIMessage: ${err}`);
       return;
     }

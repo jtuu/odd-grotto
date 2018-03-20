@@ -3,7 +3,7 @@ import { IEntity } from "./Entity";
 import { Rng } from "./Random";
 import { directions, moveAction } from "./Action";
 
-export class AIController extends Controller{
+export class AIController extends Controller {
   private static readonly directionVectors = Object.values(directions);
 
   constructor(entity: IEntity, protected rng: Rng) {

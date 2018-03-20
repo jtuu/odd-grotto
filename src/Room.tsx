@@ -15,24 +15,24 @@ import { deflate, Inflate } from "pako";
 
 export type RoomMode = "play" | "watch";
 
-interface RoomRouteParams{
+interface RoomRouteParams {
   id: string;
   name: string;
   mode: RoomMode;
 }
 
-interface RoomProps extends RouteComponentProps<RoomRouteParams>{
+interface RoomProps extends RouteComponentProps<RoomRouteParams> {
   username: string;
 }
 
-interface RoomState{
+interface RoomState {
   users: User[];
   chatMessages: ChatMessage[];
   loaded: boolean;
   ping: number;
 }
 
-export class Room extends React.Component<RoomProps, RoomState>{
+export class Room extends React.Component<RoomProps, RoomState> {
   private initialUsersReceived = false;
   private ref!: firebase.database.Reference;
   private usersRef!: firebase.database.Reference;
@@ -239,7 +239,7 @@ export class Room extends React.Component<RoomProps, RoomState>{
   }
 
   private async handleChatCommand(command: string) {
-    switch (command.toLowerCase()){
+    switch (command.toLowerCase()) {
       case "ping":
         const ping = await this.peers.ping();
         this.putChatMessage(this.createChatMessage("SYSTEM", `Ping ${ping}ms`));

@@ -6,11 +6,11 @@ import { Lobby } from "./Lobby";
 import { UsernameSetter } from "./UsernameSetter";
 import  {BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-interface AppProps{
+interface AppProps {
 
 }
 
-interface AppState{
+interface AppState {
   username: string;
 }
 
@@ -18,7 +18,7 @@ function getRandomUsername(): string {
   return `Guest#${Math.random().toFixed(5).slice(2)}`;
 }
 
-class App extends React.Component<AppProps, AppState>{
+class App extends React.Component<AppProps, AppState> {
   private readonly basename = window.location.pathname;
   private readonly localStorageKey = "odd-grotto-app-state";
 
@@ -27,7 +27,7 @@ class App extends React.Component<AppProps, AppState>{
     const storedState = window.localStorage.getItem(this.localStorageKey);
     if (storedState) {
       this.state = JSON.parse(storedState);
-    }else {
+    } else {
       this.state = {
         username: getRandomUsername()
       };

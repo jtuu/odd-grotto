@@ -40,4 +40,4 @@ export const EntityStore = types
   }));
 
 type IEntityStoreType = typeof EntityStore.Type;
-export interface IEntityStore extends IEntityStoreType{}
+export interface IEntityStore extends IEntityStoreType {}

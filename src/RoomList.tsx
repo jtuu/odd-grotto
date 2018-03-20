@@ -5,20 +5,20 @@ import { Bind } from "./Decorators";
 import { Link } from "react-router-dom";
 import { ListGroup, ListGroupItem, Button } from "reactstrap";
 
-interface RoomListProps{
+interface RoomListProps {
 
 }
 
-interface RoomListEntry{
+interface RoomListEntry {
   id: string;
   name: string;
 }
 
-interface RoomListState{
+interface RoomListState {
   rooms: RoomListEntry[];
 }
 
-export class RoomList extends React.Component<RoomListProps, RoomListState>{
+export class RoomList extends React.Component<RoomListProps, RoomListState> {
   private roomsRef!: firebase.database.Reference;
   private initialRoomsReceived = false;
 
@@ -86,7 +86,7 @@ export class RoomList extends React.Component<RoomListProps, RoomListState>{
 
     if (this.state.rooms.length < 1) {
       listContents = <em style={{textAlign: "center"}}>None!</em>;
-    }else {
+    } else {
       listContents = this.state.rooms.map(room => {
         const encodedId = encodeURIComponent(room.id);
         const encodedName = encodeURIComponent(room.name);

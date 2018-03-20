@@ -2,17 +2,17 @@ import * as React from "react";
 import { Bind } from "./Decorators";
 import "Loader.css";
 
-interface LoaderProps{
+interface LoaderProps {
   loaded: boolean;
   onceLoaded: (() => React.ReactNode);
 }
 
-interface LoaderState{
+interface LoaderState {
   playing: boolean;
   stopping: boolean;
 }
 
-export class Loader extends React.Component<LoaderProps, LoaderState>{
+export class Loader extends React.Component<LoaderProps, LoaderState> {
   private swirlPartCount = 10;
   private swirlCount = 4;
   private totalPartCount = this.swirlPartCount * this.swirlCount;

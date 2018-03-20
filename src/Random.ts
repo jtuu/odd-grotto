@@ -1,11 +1,11 @@
 import { MersenneTwister } from "./MersenneTwister";
 
-export interface RngState{
+export interface RngState {
   mti: number;
   mt: number[];
 }
 
-export class Rng extends MersenneTwister{
+export class Rng extends MersenneTwister {
   public static readonly max: number = 0xffffffff;
   public readonly seed: number;
 

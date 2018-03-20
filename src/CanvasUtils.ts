@@ -1,6 +1,6 @@
 import { Bind } from "./Decorators";
 
-class CanvasUtils{
+class CanvasUtils {
   private osc: HTMLCanvasElement; // offscreen canvas
   private octx: CanvasRenderingContext2D;
 

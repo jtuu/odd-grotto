@@ -15,12 +15,12 @@ export const directions = {
   SE: Vec2(1, 1)
 };
 
-export enum ActionType{
+export enum ActionType {
   Move,
   Attack
 }
 
-export interface Action<P extends {}>{
+export interface Action<P extends {}> {
   type: ActionType;
   payload: P;
 }
@@ -38,7 +38,7 @@ export function moveAction(direction: TVec2): MoveAction {
 export const maxEnergy = 100;
 
 export function getEnergyCost(actionType: ActionType): number {
-  switch (actionType){
+  switch (actionType) {
     case ActionType.Move:
       return 100;
     case ActionType.Attack:

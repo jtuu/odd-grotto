@@ -41,9 +41,9 @@ function memoizeGetAccessor(descriptor: TypedPropertyDescriptor<any>) {
 export const Memoize: MethodDecorator = function Memoize(_target, _propertyName, descriptor) {
   if (descriptor.value !== undefined) {
     memoizeMethod(descriptor);
-  }else if (descriptor.get !== undefined) {
+  } else if (descriptor.get !== undefined) {
     memoizeGetAccessor(descriptor);
-  }else {
+  } else {
     throw new Error("Only methods or getters can be decorated with Memoize.");
   }
 };

@@ -2,16 +2,16 @@ import * as React from "react";
 import { InputGroup, InputGroupAddon, Input, Button, UncontrolledTooltip } from "reactstrap";
 import { Bind } from "./Decorators";
 
-interface UsernameSetterProps{
+interface UsernameSetterProps {
   username: string;
   onSetUsername(newUsername: string): void;
 }
 
-interface UsernameSetterState{
+interface UsernameSetterState {
   inputValue: string;
 }
 
-export class UsernameSetter extends React.Component<UsernameSetterProps, UsernameSetterState>{
+export class UsernameSetter extends React.Component<UsernameSetterProps, UsernameSetterState> {
   private static tooltipIdCounter = 0;
   private tooltipId = `UsernameSetter-Tooltip-${UsernameSetter.tooltipIdCounter++}`;
 

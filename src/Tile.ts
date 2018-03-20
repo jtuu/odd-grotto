@@ -24,4 +24,4 @@ export const Tile = types
   }));
 
 type ITileType = typeof Tile.Type;
-export interface ITile extends ITileType{}
+export interface ITile extends ITileType {}

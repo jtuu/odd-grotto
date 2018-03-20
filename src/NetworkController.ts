@@ -2,7 +2,7 @@ import { Controller } from "./Controller";
 import { IEntity } from "./Entity";
 import { PeerAPI, PeerAPITopic, PeerAPIMessage } from "./PeerAPI";
 
-export class NetworkController extends Controller{
+export class NetworkController extends Controller {
   private messages: AsyncIterableIterator<PeerAPIMessage<PeerAPITopic.Action>>;
 
   constructor(entity: IEntity, private peers: PeerAPI) {

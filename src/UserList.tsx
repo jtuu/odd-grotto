@@ -4,18 +4,18 @@ import { ConnectionStatus } from "./WebRTCMultiConnector";
 import { Bind } from "./Decorators";
 import "./UserList.css";
 
-export interface User{
+export interface User {
   id: string;
   name: string;
   connectionStatus: ConnectionStatus;
 }
 
-interface UserListProps{
+interface UserListProps {
   ownId: string;
   users: User[];
 }
 
-export class UserList extends React.Component<UserListProps>{
+export class UserList extends React.Component<UserListProps> {
   constructor(props: UserListProps) {
     super(props);
   }
@@ -29,8 +29,8 @@ export class UserList extends React.Component<UserListProps>{
     if (user.id === this.props.ownId) {
       tooltipText = "That's you";
       statusClass = "you";
-    }else {
-      switch (user.connectionStatus){
+    } else {
+      switch (user.connectionStatus) {
         default:
         case ConnectionStatus.Unknown:
           tooltipText = "Unknown status: " + user.connectionStatus;
