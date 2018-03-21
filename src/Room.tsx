@@ -164,8 +164,8 @@ export class Room extends React.Component<RoomProps, RoomState> {
   }
 
   private async handleChatMessages() {
-    for await(const {payload} of this.peers.messages(PeerAPITopic.ChatMessage)) {
-      this.putChatMessage(payload);
+    for await(const chatMsg of this.peers.takeEvery(PeerAPITopic.ChatMessage)) {
+      this.putChatMessage(chatMsg);
     }
   }
 
@@ -272,8 +272,7 @@ export class Room extends React.Component<RoomProps, RoomState> {
   private async fetchGameState(): Promise<GameState> {
     const decompressor = new Inflate({to: "string"});
 
-    for await(const msg of this.peers.messages(PeerAPITopic.GameStatePart)) {
-      const data = msg.payload.part;
+    for await(const data of this.peers.takeEvery(PeerAPITopic.GameStatePart)) {
       const end = data[oddGrottoDataKindIndex] === OddGrottoDataKind.GameStatePartEnd;
       
       decompressor.push(data.subarray(oddGrottoDataHeaderSize), end);

@@ -301,13 +301,12 @@ export class Game extends React.PureComponent<GameProps> {
   }
 
   private async handleJoins() {
-    for await(const msg of this.peers.messages(PeerAPITopic.JoinGame)) {
-      const entity = msg.payload;
-      entity.tracked = false;
-      if (entity.controllerType === ControllerType.Keyboard) {
-        entity.controllerType = ControllerType.Network;
+    for await(const joinedEntity of this.peers.takeEvery(PeerAPITopic.JoinGame)) {
+      joinedEntity.tracked = false;
+      if (joinedEntity.controllerType === ControllerType.Keyboard) {
+        joinedEntity.controllerType = ControllerType.Network;
       }
-      this.store.entities.create(entity);
+      this.store.entities.create(joinedEntity);
       this.draw();
     }
   }

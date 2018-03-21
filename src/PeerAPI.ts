@@ -1,6 +1,6 @@
 import { WebRTCMultiConnector, RTCDataChannelData } from "./WebRTCMultiConnector";
 import { Bind } from "./Decorators";
-import { AsyncStream } from "./AsyncStream";
+import { EventStreamer } from "./EventStreamer";
 import { ChatMessage } from "./ChatBox";
 import { Action } from "./Action";
 import { SignedData, isSignedData } from "./Utils";
@@ -15,34 +15,30 @@ export enum PeerAPITopic {
   JoinGame = "JoinGame"
 }
 
-interface PingPongPayload {
+interface PingPongMessage {
   id: number;
 }
 
-interface ActionPayload {
+export interface ActionMessage {
   entityId: number;
   time: number;
   action: Action<any>;
 }
 
-interface GameStatePart {
-  part: OddGrottoData;
-}
-
-interface PayloadMap {
-  [PeerAPITopic.Ping]: PingPongPayload;
-  [PeerAPITopic.Pong]: PingPongPayload;
+interface PeerAPITopicMap {
+  [PeerAPITopic.Ping]: PingPongMessage;
+  [PeerAPITopic.Pong]: PingPongMessage;
   [PeerAPITopic.ChatMessage]: ChatMessage;
-  [PeerAPITopic.Action]: ActionPayload;
-  [PeerAPITopic.GameStatePart]: GameStatePart;
+  [PeerAPITopic.Action]: ActionMessage;
+  [PeerAPITopic.GameStatePart]: OddGrottoData;
   [PeerAPITopic.JoinGame]: IEntity;
 }
 
-type PayloadMapKeys = keyof PayloadMap;
+type KeyOfPeerAPITopicMap = keyof PeerAPITopicMap;
 
-export interface PeerAPIMessage<T extends PayloadMapKeys> {
+export interface PeerAPIMessage<T extends KeyOfPeerAPITopicMap> {
   topic: T;
-  payload: PayloadMap[T];
+  payload: PeerAPITopicMap[T];
 }
 
 // these have to identical but unfortunately
@@ -58,15 +54,14 @@ export enum OddGrottoDataKind {
 
 export const oddGrottoDataHeaderSize = oddGrottoSignature.length + 1;
 
-export class PeerAPI {
-  private messageStream: AsyncStream<PeerAPIMessage<any>> = new AsyncStream(true);
-
+export class PeerAPI extends EventStreamer<PeerAPITopicMap> {
   constructor(private connector: WebRTCMultiConnector) {
+    super();
     this.connector.onMessage(this.handleMessage);
     this.pong();
   }
 
-  private static createMessage<T extends PayloadMapKeys>(topic: T, payload: PayloadMap[T]): PeerAPIMessage<T> {
+  private static createMessage<T extends KeyOfPeerAPITopicMap>(topic: T, payload: PeerAPITopicMap[T]): PeerAPIMessage<T> {
     return {topic, payload};
   }
 
@@ -94,10 +89,6 @@ export class PeerAPI {
     throw new Error("Failed to sign data correctly");
   }
 
-  private static isMessageOf<T extends PayloadMapKeys>(msg: PeerAPIMessage<any>, topic: T): msg is PeerAPIMessage<T> {
-    return msg.topic === topic;
-  }
-
   private static parseMessage(msg: RTCDataChannelData): PeerAPIMessage<any> {
     if (typeof msg === "string") {
       const parsed: any = JSON.parse(msg);
@@ -113,7 +104,7 @@ export class PeerAPI {
         switch (view[oddGrottoDataKindIndex]) {
           case OddGrottoDataKind.GameStatePart:
           case OddGrottoDataKind.GameStatePartEnd:
-            return PeerAPI.createMessage(PeerAPITopic.GameStatePart, {part: view});
+            return PeerAPI.createMessage(PeerAPITopic.GameStatePart, view);
         }
       }
 
@@ -133,37 +124,25 @@ export class PeerAPI {
       return;
     }
 
-    this.messageStream.add(msg);
-  }
-
-  public async *messages<T extends PayloadMapKeys>(topic: T): AsyncIterableIterator<PeerAPIMessage<T>> {
-    for await(const msg of this.messageStream) {
-      if (PeerAPI.isMessageOf(msg, topic)) {
-        yield msg;
-      }
-    }
+    this.emit(msg.topic, msg.payload);
   }
 
   public async ping(): Promise<number> {
     const timeSent = Date.now();
     const id = Math.random();
     const numConn = this.connector.connectionCount;
-    let numReceived = 0;
     let durSum = 0;
 
     if (numConn < 1) {
       return 0;
     }
 
-    const pongs = this.messages(PeerAPITopic.Pong);
+    const pongs = this.takeN(PeerAPITopic.Pong, numConn);
     this.connector.broadcast(PeerAPI.createMessage(PeerAPITopic.Ping, {id}));
 
     for await(const pong of pongs) {
-      if (pong.payload.id === id) {
+      if (pong.id === id) {
         durSum += Date.now() - timeSent;
-        if (++numReceived >= numConn) {
-          break;
-        }
       }
     }
 
@@ -172,8 +151,8 @@ export class PeerAPI {
   }
 
   private async pong() {
-    for await(const ping of this.messages(PeerAPITopic.Ping)) {
-      this.connector.broadcast(PeerAPI.createMessage(PeerAPITopic.Pong, {id: ping.payload.id}));
+    for await(const ping of this.takeEvery(PeerAPITopic.Ping)) {
+      this.connector.broadcast(PeerAPI.createMessage(PeerAPITopic.Pong, {id: ping.id}));
     }
   }
 
@@ -195,7 +174,7 @@ export class PeerAPI {
   }
 
   public dispose() {
-    this.messageStream.terminate();
+    this.terminate();
     this.connector.dispose();
   }
 }
