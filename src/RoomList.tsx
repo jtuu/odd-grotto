@@ -5,36 +5,20 @@ import { Bind } from "./Decorators";
 import { Link } from "react-router-dom";
 import { ListGroup, ListGroupItem, Button } from "reactstrap";
 
-<<<<<<< HEAD
 interface RoomListProps {
 
 }
 
 interface RoomListEntry {
-=======
-interface RoomListProps{
-
-}
-
-interface RoomListEntry{
->>>>>>> c47c0c45ce7672a7abd9b330450138222d348e21
   id: string;
   name: string;
 }
 
-<<<<<<< HEAD
 interface RoomListState {
   rooms: RoomListEntry[];
 }
 
 export class RoomList extends React.Component<RoomListProps, RoomListState> {
-=======
-interface RoomListState{
-  rooms: RoomListEntry[];
-}
-
-export class RoomList extends React.Component<RoomListProps, RoomListState>{
->>>>>>> c47c0c45ce7672a7abd9b330450138222d348e21
   private roomsRef!: firebase.database.Reference;
   private initialRoomsReceived = false;
 
@@ -102,11 +86,7 @@ export class RoomList extends React.Component<RoomListProps, RoomListState>{
 
     if (this.state.rooms.length < 1) {
       listContents = <em style={{textAlign: "center"}}>None!</em>;
-<<<<<<< HEAD
     } else {
-=======
-    }else {
->>>>>>> c47c0c45ce7672a7abd9b330450138222d348e21
       listContents = this.state.rooms.map(room => {
         const encodedId = encodeURIComponent(room.id);
         const encodedName = encodeURIComponent(room.name);
@@ -130,11 +110,7 @@ export class RoomList extends React.Component<RoomListProps, RoomListState>{
     }
 
     return (
-<<<<<<< HEAD
       <div style={{minHeight: "86%"}}>
-=======
-      <div>
->>>>>>> c47c0c45ce7672a7abd9b330450138222d348e21
         <div style={{textAlign: "center"}}>Games currently running:</div>
         <ListGroup>{listContents}</ListGroup>
       </div>

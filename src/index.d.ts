@@ -10,14 +10,11 @@ declare module "*ice-servers.json"{
   export default servers;
 }
 
-<<<<<<< HEAD
 declare module "*branding.json"{
   export const github: string;
   export const discord: string;
 }
 
-=======
->>>>>>> c47c0c45ce7672a7abd9b330450138222d348e21
 interface HTMLElementEventMap extends ElementEventMap{
   "abort": UIEvent;
   "activate": UIEvent;
@@ -96,8 +93,5 @@ declare interface DOMEventTarget extends EventTarget{
   removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
 }
 
-<<<<<<< HEAD
+
 declare type TypedArray = Int8Array | Uint8Array | Uint8ClampedArray | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array;
-=======
-declare type TypedArray = Int8Array | Uint8Array | Uint8ClampedArray | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array;
->>>>>>> c47c0c45ce7672a7abd9b330450138222d348e21

@@ -5,7 +5,6 @@ import { Bind } from "./Decorators";
 import * as firebase from "firebase";
 import { Redirect } from "react-router-dom";
 import { Button } from "reactstrap";
-<<<<<<< HEAD
 import * as branding from "./branding.json";
 
 interface LobbyProps {
@@ -17,18 +16,6 @@ interface LobbyState {
 }
 
 export class Lobby extends React.Component<LobbyProps, LobbyState> {
-=======
-
-interface LobbyProps{
-  username: string;
-}
-
-interface LobbyState{
-  navigatingToNewRoom: boolean;
-}
-
-export class Lobby extends React.Component<LobbyProps, LobbyState>{
->>>>>>> c47c0c45ce7672a7abd9b330450138222d348e21
   private newRoomRef!: firebase.database.Reference;
   private newRoomName: string | undefined;
   public state = {
@@ -60,21 +47,13 @@ export class Lobby extends React.Component<LobbyProps, LobbyState>{
             push={true}
           />
         );
-<<<<<<< HEAD
       } else {
-=======
-      }else {
->>>>>>> c47c0c45ce7672a7abd9b330450138222d348e21
         console.error("Navigating to new room failed");
       }
     }
 
     return (
-<<<<<<< HEAD
       <div style={{height: "100%"}}>
-=======
-      <div>
->>>>>>> c47c0c45ce7672a7abd9b330450138222d348e21
         <div style={{padding: "0.5rem", display: "flex", alignItems: "flex-start", justifyContent: "space-between"}}>
           <div>
             <h3>Welcome to Odd Grotto!</h3>
@@ -83,13 +62,10 @@ export class Lobby extends React.Component<LobbyProps, LobbyState>{
           {this.props.children}
         </div>
         <RoomList />
-<<<<<<< HEAD
         <footer style={{textAlign: "center"}}>
           <a href={branding.github} style={{marginRight: "1rem"}}>Odd Grotto on Github</a>
           <a href={branding.discord}>Join the community on Discord</a>
         </footer>
-=======
->>>>>>> c47c0c45ce7672a7abd9b330450138222d348e21
       </div>
     );
   }
