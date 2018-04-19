@@ -10,20 +10,9 @@ declare module "*ice-servers.json"{
   export default servers;
 }
 
-declare module "*branding.json"{
-  export const github: string;
-  export const discord: string;
-}
-
 interface HTMLElementEventMap extends ElementEventMap{
   "abort": UIEvent;
-  "activate": UIEvent;
   "animationiteration": AnimationEvent;
-  "beforeactivate": UIEvent;
-  "beforecopy": ClipboardEvent;
-  "beforecut": ClipboardEvent;
-  "beforedeactivate": UIEvent;
-  "beforepaste": ClipboardEvent;
   "blur": FocusEvent;
   "canplay": Event;
   "canplaythrough": Event;
@@ -34,7 +23,6 @@ interface HTMLElementEventMap extends ElementEventMap{
   "cuechange": Event;
   "cut": ClipboardEvent;
   "dblclick": MouseEvent;
-  "deactivate": UIEvent;
   "drag": DragEvent;
   "dragend": DragEvent;
   "dragenter": DragEvent;
@@ -44,7 +32,6 @@ interface HTMLElementEventMap extends ElementEventMap{
   "drop": DragEvent;
   "durationchange": Event;
   "emptied": Event;
-  "ended": MediaStreamErrorEvent;
   "error": ErrorEvent;
   "focus": FocusEvent;
   "input": Event;
@@ -64,8 +51,6 @@ interface HTMLElementEventMap extends ElementEventMap{
   "mouseover": MouseEvent;
   "mouseup": MouseEvent;
   "mousewheel": WheelEvent;
-  "MSContentZoom": UIEvent;
-  "MSManipulationStateChanged": MSManipulationEvent;
   "paste": ClipboardEvent;
   "pause": Event;
   "play": Event;
@@ -93,5 +78,6 @@ declare interface DOMEventTarget extends EventTarget{
   removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
 }
 
-
 declare type TypedArray = Int8Array | Uint8Array | Uint8ClampedArray | Int16Array | Uint16Array | Int32Array | Uint32Array | Float32Array | Float64Array;
+
+declare type Transferable = ArrayBuffer | SharedArrayBuffer | MessagePort | ImageBitmap;

@@ -258,7 +258,7 @@ export class WebRTCMultiConnector {
 
     this.setupIce(conn, offer.sender);
 
-    conn.setRemoteDescription(offer.payload as RTCSessionDescription)
+    conn.setRemoteDescription(offer.payload as RTCSessionDescriptionInit)
       .then(() => conn.createAnswer())
       .then(answer => conn.setLocalDescription(answer))
       .then(() => {
@@ -296,7 +296,7 @@ export class WebRTCMultiConnector {
     conn.createOffer()
       .then(offer => conn.setLocalDescription(offer))
       .then(() => this.signaler.sendOffer(this.identifier, target, conn.localDescription))
-      .then(answer => conn.setRemoteDescription(answer))
+      .then(answer => conn.setRemoteDescription(answer as RTCSessionDescriptionInit))
       .then(() => {
         this.addConnection(target, conn, chan);
       });
