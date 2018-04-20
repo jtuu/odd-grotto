@@ -10,70 +10,109 @@ const {
 	UglifyESPlugin,
 	CSSPlugin
 } = require("fuse-box");
+const { src, task, watch, context, fuse } = require("fuse-box/sparky");
 const {MacroPlugin} = require("./lib/MacroPlugin");
 const {basename} = require("path");
-const package = require("./package");
+const pkg = require("./package");
 
-const mainFileName = basename(package.main);
+const mainFileName = basename(pkg.main);
 
-const fuse = FuseBox.init({
-	package: {
-		name: package.name,
-		entry: mainFileName
-	},
-	homeDir: "src",
-	target: "browser@es2017",
-	output: "public/$name.js",
-	allowSyntheticDefaultImports: true,
-	plugins: [
-		JSONPlugin(),
-		CSSPlugin(),
-		
-		MacroPlugin({
-			defineFilePath: "lib/defines.m4",
-			ignoreFiles: [
-				"Assert.ts",
-				"Globals.ts"
-			]
-		}),
-		
-		BabelPlugin({
-			config: {
-				sourceMaps: true,
-				presets: ["es2017", "stage-3"],
-				plugins: [
-					"transform-react-jsx"
-				]
+context(class {
+	getConfig() {
+		const fuse = FuseBox.init({
+			package: {
+				name: pkg.name,
+				entry: mainFileName
 			},
-			test: /\.tsx?$/,
-			extensions: [".js"]
-		}),
-		WebIndexPlugin({
-      path: ".",
-      template: "src/index.html"
-    }),
-    prodEnv && QuantumPlugin({
-			ensureES5: false
-		}),
-		prodEnv && UglifyESPlugin()
-	],
-  log: devEnv,
-  debug: devEnv
+			homeDir: "src",
+			target: "browser@es2017",
+			output: "public/$name.js",
+			allowSyntheticDefaultImports: true,
+			plugins: [
+				JSONPlugin(),
+				CSSPlugin(),
+				
+				MacroPlugin({
+					defineFilePath: "lib/defines.m4",
+					ignoreFiles: [
+						"Assert.ts",
+						"Globals.ts"
+					]
+				}),
+				
+				BabelPlugin({
+					config: {
+						sourceMaps: true,
+						presets: ["es2017", "stage-3"],
+						plugins: [
+							"transform-react-jsx"
+						]
+					},
+					test: /\.tsx?$/,
+					extensions: [".js"]
+				}),
+				WebIndexPlugin({
+					path: ".",
+					template: "src/index.html"
+				}),
+				prodEnv && QuantumPlugin({
+					ensureES5: false
+				}),
+				prodEnv && UglifyESPlugin()
+			],
+			log: devEnv,
+			debug: devEnv
+		});
+
+		const app = fuse.bundle("main").instructions("> main.ts");
+
+		if (devEnv) {
+			fuse.dev({
+				port: 3000
+			});
+			app.hmr().watch();
+		}
+
+		return fuse;
+	}
+
+	async buildWorkers() {
+		const workerConfig = FuseBox.init({
+			homeDir: "src",
+			target: "browser@es2017",
+			output: "public/$name.js",
+			allowSyntheticDefaultImports: true,
+			plugins: [
+				JSONPlugin(),
+				prodEnv && QuantumPlugin({
+					ensureES5: false,
+					containedAPI: true,
+					bakeApiIntoBundle: "workers"
+				}),
+				prodEnv && UglifyESPlugin()
+			],
+			log: devEnv,
+			debug: devEnv
+		});
+
+		const workers = [
+			"DecompressorWorker",
+			"CompressorWorker"
+		];
+
+		workers.forEach(w => {
+			const bundle = workerConfig.bundle(w).instructions(`> ${w}.ts`);
+			if (devEnv) {
+				bundle.watch();
+			}
+		});
+
+		await workerConfig.run();
+	}
 });
 
-const bundle = name => fuse.bundle(name).instructions(` > ${name}.ts`);
-const bundleGlobals = () => bundle("Globals").globals({[package.name]: "*"});
-const bundleMain = () => bundle("main");
-
-if(devEnv){
-  fuse.dev({
-    port: 3000
-  });
-	bundleGlobals().hmr().watch();
-	bundleMain().hmr().watch();
-}else{
-	bundleGlobals();
-  bundleMain();
-}
-
-fuse.run();
+task("default", async context => {
+	context.buildWorkers();
+	const fuse = context.getConfig();
+	await fuse.run();
+});

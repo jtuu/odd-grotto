@@ -11,7 +11,7 @@ import { Loader } from "./Loader";
 import { UserList, User } from "./UserList";
 import { Game, GameState } from "./Game";
 import { PeerAPI, PeerAPITopic, OddGrottoDataKind, oddGrottoDataKindIndex, oddGrottoDataHeaderSize } from "./PeerAPI";
-import { deflate, Inflate } from "pako";
+import { compress, Decompressor } from "./Compression";
 
 export type RoomMode = "play" | "watch";
 
@@ -270,27 +270,20 @@ export class Room extends React.Component<RoomProps, RoomState> {
   }
 
   private async fetchGameState(): Promise<GameState> {
-    const decompressor = new Inflate({to: "string"});
+    const decompressor = new Decompressor();
 
     for await(const data of this.peers.takeEvery(PeerAPITopic.GameStatePart)) {
       const end = data[oddGrottoDataKindIndex] === OddGrottoDataKind.GameStatePartEnd;
       
-      decompressor.push(data.subarray(oddGrottoDataHeaderSize), end);
+      decompressor.addChunk(data.slice(oddGrottoDataHeaderSize));
 
       if (end) {
         break;
       }
     }
 
-    if (decompressor.err) {
-      throw new Error(decompressor.msg);
-    }
-
-    if (typeof decompressor.result !== "string") {
-      throw new Error(`Expected result of decompression to be a string but got ${typeof decompressor.result}`);
-    }
-
-    return JSON.parse(decompressor.result);
+    const result = await decompressor.getResult(true);
+    return JSON.parse(result);
   }
 
   private getGame(): Promise<Game> {
@@ -300,7 +293,7 @@ export class Room extends React.Component<RoomProps, RoomState> {
   private async sendGameState(target: string) {
     await this.connector.awaitConnect(target);
 
-    const compressed = deflate(JSON.stringify(await this.getGameState()));
+    const compressed = await compress(JSON.stringify(await this.getGameState()));
     const chunkSize = lowestCommonMessageByteLimit - oddGrottoDataHeaderSize;
 
     let i = 0;
